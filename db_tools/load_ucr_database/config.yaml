@@ -1,0 +1,26 @@
+Database:
+  User_Setup:
+    - file_name: create_public/create_ucr_prd.sql.py
+      parameter_name: UCR_PRD_PASSWORD
+    - file_name: create_public/create_ucr_read_only_prd.sql.py
+      parameter_name: UCR_READ_ONLY_PRD_PASSWORD
+    - file_name: create_public/create_nibrs_analyst.sql.py
+      parameter_name: NIBRS_ANALYST_PASSWORD
+  CJIS_Pre:
+    file_name: data/feb_25/ucr_stat_2024-pre.rti.sql
+  CJIS_Data:
+    file_name: data/feb_25/ucr_stat_2024-data.dmp.gz
+  CJIS_Post:
+    file_name: data/feb_25/ucr_stat_2024-post.sql
+  PUBLIC_SQL:
+    - file_name: create_public/create_downloaded_on.sql.py
+      parameter_name: DOWNLOADED_ON
+    - file_name: create_public/public_tables_1.sql
+    - file_name: create_public/public_incident_mat-views.sql
+    - file_name: create_public/public_views_ucr_prd.sql
+    - file_name: create_public/public_offense_mat-views.sql
+    - file_name: create_public/public_mat_views.sql
+    - file_name: create_public/universe_file_function.sql
+  User_Access:
+    - file_name: create_public/grant_read_access.sql.py
+      parameter_name: IMPORT_PGDATABASE

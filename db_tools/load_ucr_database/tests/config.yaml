@@ -1,0 +1,17 @@
+Database:
+  CJIS_Pre: 
+    file_name: 'data/testdb-pre.sql'
+  CJIS_Data: 
+    file_name: 'data/testdb-data.dmp.gz'
+  CJIS_Post: 
+    file_name: 'data/testdb-post.sql'
+  PUBLIC_SQL:
+    - 
+      file_name: 'create_public/create_read_access_user.sql.py'
+      parameter_name: 'READ_ACCESS_USER_PASSWORD'
+    - 
+      file_name: create_public/create_downloaded_on.sql.py
+      parameter_name: DOWNLOADED_ON
+    - 
+      file_name: 'create_public/grant_read_access.sql.py'
+      parameter_name: 'IMPORT_PGDATABASE'
