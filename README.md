@@ -1,8 +1,8 @@
 # Database Export Loader Script
 
-This script is designed to automate the process of loading a database export located externally and applying view .sql files to the database. The export is expected to be in the most recent folder in the 030_Input_Data folder on the project share, and it will be copied to a corresponding directory in `data/` . Additionally, the script relies on configuration files: `config.yml` for specifying paths and `.env` for providing database credentials.
+This script is designed to automate the process of loading a database export located externally and applying view .sql files to the database. The export is expected to be downloaded and copied to a corresponding directory in `data/<mmm>_<yy>/`. Additionally, the script relies on configuration files: `config.yml` for specifying paths and `.env` for providing database credentials.
 
-It uses two database connections: one to an existing database and one to a new database to be imported.  The script also supports running a specific SQL file, skipping certain steps, and enabling verbose logging through command-line arguments.
+It uses two database connections: one to an existing database and one to a new database to be imported. The script also supports running a specific SQL file, skipping certain steps, and enabling verbose logging through command-line arguments.
 
 ## Database Prerequisites
 
@@ -15,7 +15,7 @@ The script is used to import to a database from a set of SQL files.
 
 ## Install
 
-The script can be run with Docker or directly with Python.
+The script can be run with Docker, Conda, or directly with Python.
 
 ### Run with Docker
 
@@ -23,6 +23,35 @@ Running with Docker includes all dependencies. The following command will build 
 
 ```bash
 docker compose build
+```
+
+### Run with Conda
+
+Using Conda provides an isolated environment with all necessary dependencies:
+
+1. Create a new Conda environment:
+
+```bash
+conda create -n db_loader python
+```
+
+2. Activate the environment:
+
+```bash
+conda activate db_loader
+```
+
+3. Install dependencies:
+
+```bash
+conda install -c conda-forge postgresql psycopg2
+pip install -r requirements.txt
+```
+
+4. Ensure you have `psql` and `pg_restore` utilities available in your Conda environment:
+
+```bash
+conda install -c conda-forge postgresql=16
 ```
 
 ### Run natively
@@ -48,7 +77,7 @@ pip install -r requirements.txt
 - The export consists of 3 files, pre, data, and post.
   - Pre creates the database & table schema
     - e.g. `db_tools/load_ucr_database/data/feb_25/ucr_stat_2024-pre.sql`
-  - - Data is a compressed binary export of the db contents
+  - Data is a compressed binary export of the db contents
     - e.g. `db_tools/load_ucr_database/data/feb_25/ucr_stat_2024-data.dmp.gz`
   - Post wraps things up, creates indexes etc.
     - e.g. `db_tools/load_ucr_database/data/feb_25/ucr_stat_2024-pre.sql`
@@ -56,7 +85,6 @@ pip install -r requirements.txt
 ### 2. Credentials
 
 - Provide your PostgreSQL database credentials in a `.env` file in the same directory as load_nibrs_ucr_db.py. The script requires the following environment variables:
-
 
 - PGHOST: The hostname of your PostgreSQL server
 - PGPORT: The port number to connect to your PostgreSQL server (default: 5432)
@@ -71,7 +99,6 @@ pip install -r requirements.txt
 - UCR_READ_ONLY_PRD_PASSWORD: Password for the ucr_read_only_prd user
 - NIBRS_ANALYST_PASSWORD: Password for the nibrs_analyst user
 - DOWNLOADED_ON: Date the data was downloaded (format: YYYY-MM-DD)
-
 
 `EXISTING_PGDATABASE` is used to connect to the Postgres instance to check for the existence of the imported database, and create it if necessary. `IMPORT_PGDATABASE` is the name of the database that will be created and data will be imported into.
 
@@ -98,15 +125,19 @@ Follow these steps to use the script:
 
 4. Check the `config.yaml` file to ensure the paths are correctly configured for your environment. Make any necessary modifications as needed.
 
-5. Run load_nibrs_ucr_db.py in one of two ways
-   1. Docker Run `docker-compose up -d db_importer; docker-compose logs -f` to import the database.
+5. Run load_nibrs_ucr_db.py in one of three ways:
+   1. Docker: Run `docker-compose up -d db_importer; docker-compose logs -f` to import the database.
       1. This will allow you to see the logs of the process as it runs or dismiss using cmd-c (or ctrl-c in windows)
    
-   2. Alternatively, you can create a python environment, run `pip install -r requirements.txt` and then run the `load_nibrs_ucr_db.py` script to import the data from the exported file and apply the view SQL files. You can run the script using the following command:
-
-   ```bash
-   python load_nibrs_ucr_db.py
-   ```
+   2. Conda: Activate your Conda environment and run:
+      ```bash
+      python load_nibrs_ucr_db.py
+      ```
+   
+   3. Native Python: Create a python environment, run `pip install -r requirements.txt` and then run the `load_nibrs_ucr_db.py` script to import the data from the exported file and apply the view SQL files:
+      ```bash
+      python load_nibrs_ucr_db.py
+      ```
 
    The script will use the `.env` file for database credentials and the `config.yml` file for file paths.
 
@@ -137,12 +168,19 @@ The tests directory contains it's own config.yml file and data, create_public fo
 
 The test.env.sample file contains details for a local database running on docker.
 
-
 ```bash
+# Run with Python
 python load_nibrs_ucr_db.py --config test.env.sample 
 ```
-or 
+
+```bash
+# Run with Conda
+conda activate db_loader
+python load_nibrs_ucr_db.py --config test.env.sample
 ```
+
+```bash
+# Run with Docker
 docker compose up -d test_database; 
 docker compose run --rm db_importer python load_nibrs_ucr_db.py  --config test.env.sample 
-``` 
+```
