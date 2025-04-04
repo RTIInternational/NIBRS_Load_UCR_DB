@@ -55,7 +55,7 @@ class DatabaseManager:
                     [
                         "pg_restore",
                         "--dbname=" + self.params["dbname"],
-                        "--user=" + self.params["user"],
+                        "--username=" + self.params["user"],
                         "--host=" + self.params["host"],
                         "--port=" + self.params["port"],
                         "--no-acl",
@@ -95,7 +95,7 @@ class DatabaseManager:
         command = [
             "psql",
             "--dbname=" + self.params["dbname"],
-            "--user=" + self.params["user"],
+            "--username=" + self.params["user"],
             "--host=" + self.params["host"],
             "--port=" + self.params["port"],
             "-v",
@@ -253,7 +253,7 @@ class DatabaseManager:
             psql_command = [
                 "psql",
                 "--dbname=" + self.params["dbname"],
-                "--user=" + self.params["user"],
+                "--username=" + self.params["user"],
                 "--host=" + self.params["host"],
                 "--port=" + self.params["port"],
                 "-v",
