@@ -40,7 +40,7 @@ DO $$ BEGIN
             nibrs_incident.is_cargo_theft,
             nibrs_incident.agency_id,
             nibrs_incident.judicial_district,
-            nibrs_incident.prenibrs_code,
+            -- nibrs_incident.prenibrs_code, -- removed in the April 2025 delivery of the DY2024 UCR Database
             nibrs_cleared_except.cleared_except_id,
             nibrs_cleared_except.cleared_except_code,
             nibrs_cleared_except.cleared_except_name,
