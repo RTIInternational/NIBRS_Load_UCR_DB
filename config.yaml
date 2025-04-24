@@ -7,11 +7,11 @@ Database:
     - file_name: create_public/create_nibrs_analyst.sql.py
       parameter_name: NIBRS_ANALYST_PASSWORD
   CJIS_Pre:
-    file_name: data/feb_25/ucr_stat_2024-pre.rti.sql
+    file_name: data/apr_25/ucr_prd20250410-pre.sql
   CJIS_Data:
-    file_name: data/feb_25/ucr_stat_2024-data.dmp.gz
+    file_name: data/apr_25/ucr_prd20250410-data.dmp.gz
   CJIS_Post:
-    file_name: data/feb_25/ucr_stat_2024-post.sql
+    file_name: data/apr_25/ucr_prd20250410-post.sql
   PUBLIC_SQL:
     - file_name: create_public/create_downloaded_on.sql.py
       parameter_name: DOWNLOADED_ON
